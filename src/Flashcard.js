@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-export default function Flashcard({ flashcard }) {
-  const [flip, setFlip] = useState(false)
+export default function Flashcard({ countGalat, countSahi, setCountGalat, setCountSahi, flashcard }) {
+  const [flipSahi, setFlipSahi] = useState(false)
+  const [flipGalat, setFlipGalat] = useState(false)
   const [height, setHeight] = useState('initial')
 
   const frontEl = useRef()
@@ -19,17 +20,29 @@ export default function Flashcard({ flashcard }) {
     return () => window.removeEventListener('resize', setMaxHeight)
   }, [])
 
+  function handleclicksahi() {
+     setFlipSahi(true);
+     setCountSahi(countSahi+1)
+  }
+
+  function handleclickgalat() {
+    setFlipGalat(true)
+    setCountGalat(countGalat+1)
+  }
+
+  
+
   return (
     <div
-      className={`card ${flip ? 'flip' : ''}`}
+      className={`card ${flipSahi ? 'flipsahi' : ''} ${flipGalat ? 'flipgalat' : ''}`}
       style={{ height: height }}
-      onClick={() => setFlip(!flip)}
+      
     >
       <div className="front" ref={frontEl}>
         {flashcard.question}
         <div className="flashcard-options">
           {flashcard.options.map(option => {
-            return <div className="flashcard-option" key={option}>{option}</div>
+            return <div onClick={() => option === flashcard.answer ? handleclicksahi() : handleclickgalat() } className="flashcard-option" key={option}>{option}</div>
           })}
         </div>
       </div>
